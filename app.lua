@@ -57,17 +57,19 @@ end
 
 send(NAME.." has booted")
 
+local count = 0;
+
 local function loop()
     gpio.trig(pinInput, "low", function()
-        print("Down")
-
-        gpio.trig(pinInput, "high", function()
-            print("Up")
-
+        gpio.trig(pinInput);
+        gpio.write(pinLED, gpio.HIGH)
+        tmr.create():alarm(250, tmr.ALARM_SINGLE, function()
+            if(!gpio.read(pinInput)){
+                gpio.write(pinLED, gpio.LOW)
+                send(":coffee:"..pickRandomMessage())HSPaMRBS
+            }
             loop()
         end)
-
-        send(":coffee:"..pickRandomMessage())
     end)
 end
 
