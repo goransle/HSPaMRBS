@@ -3,16 +3,16 @@ local pinLED = 4
 local throttle = 5000
 local lightTime = 5000
 
-local fancy = '```\n▄████▄   ▒█████    █████▒  █████▒▓█████ ▓█████\n'..
-'▒██▀ ▀█  ▒██▒  ██▒▓██   ▒ ▓██   ▒ ▓█   ▀ ▓█   ▀\n'..
-'▒▓█    ▄ ▒██░  ██▒▒████ ░ ▒████ ░ ▒███   ▒███\n'..
-'▒▓▓▄ ▄██▒▒██   ██░░▓█▒  ░ ░▓█▒  ░ ▒▓█  ▄ ▒▓█  ▄\n'..
-'▒ ▓███▀ ░░ ████▓▒░░▒█░    ░▒█░    ░▒████▒░▒████▒\n'..
-'░ ░▒ ▒  ░░ ▒░▒░▒░  ▒ ░     ▒ ░    ░░ ▒░ ░░░ ▒░ ░\n'..
-'  ░  ▒     ░ ▒ ▒░  ░       ░       ░ ░  ░ ░ ░  ░\n'..
-'░        ░ ░ ░ ▒   ░ ░     ░ ░       ░      ░\n'..
-'░ ░          ░ ░                     ░  ░   ░  ░\n'..
-'░\n```'
+local fancy = '```\n▄████▄   ▒█████    █████▒  █████▒▓█████ ▓█████\n' ..
+    '▒██▀ ▀█  ▒██▒  ██▒▓██   ▒ ▓██   ▒ ▓█   ▀ ▓█   ▀\n' ..
+    '▒▓█    ▄ ▒██░  ██▒▒████ ░ ▒████ ░ ▒███   ▒███\n' ..
+    '▒▓▓▄ ▄██▒▒██   ██░░▓█▒  ░ ░▓█▒  ░ ▒▓█  ▄ ▒▓█  ▄\n' ..
+    '▒ ▓███▀ ░░ ████▓▒░░▒█░    ░▒█░    ░▒████▒░▒████▒\n' ..
+    '░ ░▒ ▒  ░░ ▒░▒░▒░  ▒ ░     ▒ ░    ░░ ▒░ ░░░ ▒░ ░\n' ..
+    '  ░  ▒     ░ ▒ ▒░  ░       ░       ░ ░  ░ ░ ░  ░\n' ..
+    '░        ░ ░ ░ ▒   ░ ░     ░ ░       ░      ░\n' ..
+    '░ ░          ░ ░                     ░  ░   ░  ░\n' ..
+    '░\n```'
 
 local messages = {
     'It\'s coffee time!:coffee:',
@@ -42,9 +42,9 @@ local function send(message)
             gpio.write(pinLED, gpio.LOW)
         end)
 
-        print('Sending: "'..message..'"')
+        print('Sending: "' .. message .. '"')
 
-        http.post(WEBHOOK_URL, nil, '{"text":"'..message..'"}', function(code)
+        http.post(WEBHOOK_URL, nil, '{"text":"' .. message .. '"}', function(code)
             posting = false
             print(code)
         end)
@@ -55,7 +55,7 @@ local function pickRandomMessage()
     return messages[node.random(1, #messages)];
 end
 
-send(NAME.." has booted")
+send(NAME .. " has booted")
 
 local count = 0;
 
@@ -64,10 +64,10 @@ local function loop()
         gpio.trig(pinInput);
         gpio.write(pinLED, gpio.HIGH)
         tmr.create():alarm(250, tmr.ALARM_SINGLE, function()
-            if not gpio.read(pinInput) then
+            if gpio.read(pinInput) == 0 then
                 gpio.write(pinLED, gpio.LOW)
-                send(":coffee:"..pickRandomMessage())
-            end;
+                send(":coffee:" .. pickRandomMessage())
+            end
             loop()
         end)
     end)
