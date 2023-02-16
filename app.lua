@@ -63,7 +63,7 @@ local function loop()
     gpio.trig(pinInput, "low", function()
         gpio.trig(pinInput);
         gpio.write(pinLED, gpio.HIGH)
-        tmr.create():alarm(250, tmr.ALARM_SINGLE, function()
+        tmr.create():alarm(100, tmr.ALARM_SINGLE, function()
             if gpio.read(pinInput) == 0 then
                 gpio.write(pinLED, gpio.LOW)
                 send(":coffee:" .. pickRandomMessage())
