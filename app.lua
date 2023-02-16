@@ -64,10 +64,10 @@ local function loop()
         gpio.trig(pinInput);
         gpio.write(pinLED, gpio.HIGH)
         tmr.create():alarm(250, tmr.ALARM_SINGLE, function()
-            if(!gpio.read(pinInput)){
+            if not gpio.read(pinInput) then
                 gpio.write(pinLED, gpio.LOW)
-                send(":coffee:"..pickRandomMessage())HSPaMRBS
-            }
+                send(":coffee:"..pickRandomMessage())
+            end;
             loop()
         end)
     end)
